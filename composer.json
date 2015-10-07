@@ -1,0 +1,22 @@
+{
+    "name": "tpmanc/csvhelper",
+    "keywords": ["csv", "helper", "reading"],
+    "description": "Helper class for working with CSV files",
+    "homepage": "https://github.com/tpmanc/csv-helper",
+    "license": "BSD-3-Clause",
+    "minimum-stability" : "dev",
+    "authors": [
+        {
+            "name": "tpmanc",
+            "email": "tpxtrime@mail.ru",
+            "homepage": "https://github.com/tpmanc",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"tpmanc\\csvhelper\\": ""}
+    },
+    "require": {
+        "php": ">=5.4.0"
+    }
+}

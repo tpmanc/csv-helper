@@ -1,9 +1,11 @@
 <?php
-
-namespace core\helpers;
+/**
+ * @author Chukancev Nikita <tpxtrime@mail.ru>
+ */
+namespace tpmanc\csvhelper;
 
 /**
- * Helper class for working with CSV
+ * Helper class for working with CSV files
  */
 class CsvHelper
 {
