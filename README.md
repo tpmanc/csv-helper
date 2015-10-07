@@ -30,6 +30,7 @@ Great Gritain;London;
 use tpmanc\csvhelper\CsvHelper;
 
 ...
+
 CsvHelper::open('files/file.csv')->parse(function($line) {
     echo $line[0] . ': ' . $line[1];
 });
@@ -55,6 +56,7 @@ Great Gritain|London|
 use tpmanc\csvhelper\CsvHelper;
 
 ...
+
 CsvHelper::open('files/file.csv')->delimiter('|')->parse(function($line) {
     echo $line[0] . ': ' . $line[1];
 });
@@ -80,6 +82,7 @@ Great Gritain;London;
 use tpmanc\csvhelper\CsvHelper;
 
 ...
+
 CsvHelper::open('files/file.csv')->offset(1)->limit(1)->parse(function($line) {
     echo $line[0] . ': ' . $line[1];
 });
@@ -106,7 +109,7 @@ use tpmanc\csvhelper\CsvHelper;
 
 $lineCount = 0;
 $array = [];
-CsvHelper::open('files/file.csv')->offset(1)->delimiter('|')->parse(function($line) use(&$lineCount, &$array) {
+CsvHelper::open('files/file.csv')->parse(function($line) use(&$lineCount, &$array) {
     $lineCount++;
     $array[] = $line[0];
 });
