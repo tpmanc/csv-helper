@@ -9,9 +9,20 @@ class CsvHelper
 {
     private $handle;
 
+    /**
+     * @var integer|boolean Count of lines from top to skip
+     */
     private $skipCount = false;
 
+    /**
+     * @var string Csv file rows delimeter
+     */
     private $delimeter = ';';
+
+    /**
+     * @var integer|boolean Lines count for reading
+     */
+    private $limit = false;
 
     /**
      * Open csv file
@@ -27,9 +38,20 @@ class CsvHelper
     }
 
     /**
+     * Set lines count limit
+     * @param integer $count Lines count
+     * @return this Class instance
+     */
+    public function limit($count)
+    {
+        $this->limit = $count;
+        return $this;
+    }
+
+    /**
      * Set number of line from top to skip
      * @param integer $n Count of lines to skip
-     * @return core\helpers\CsvHelper Class instance
+     * @return this Class instance
      */
     public function offset($n)
     {
@@ -40,7 +62,7 @@ class CsvHelper
     /**
      * Set delimeter for csv file
      * @param string $d Delimeter
-     * @return core\helpers\CsvHelper Class instance
+     * @return this Class instance
      */
     public function delimeter($d)
     {
@@ -56,11 +78,22 @@ class CsvHelper
     public function parse($func)
     {
         $num = 0;
+        if ($this->limit !== false) {
+            $limit = $this->limit;
+            if ($this->skipCount !== false) {
+                $limit += $this->skipCount;
+            }
+        } else {
+            $limit = false;
+        }
         while (!feof($this->handle)) {
-            $buffer = fgetcsv($this->handle, 4096, ';');
+            $buffer = fgetcsv($this->handle, 4096, $this->delimeter);
             $num++;
             if ($this->skipCount !== false && $this->skipCount === $num) {
                 continue;
+            }
+            if ($limit !== false && $limit === $num) {
+                break;
             }
             call_user_func($func, $buffer);
         }
