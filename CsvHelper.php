@@ -27,6 +27,16 @@ class CsvHelper
     private $limit = false;
 
     /**
+     * @var string|boolean Set encoding from `$fromEncoding` to `$toEncoding`
+     */
+    private $fromEncoding = false;
+
+    /**
+     * @var string|boolean Set encoding from `$fromEncoding` to `$toEncoding`
+     */
+    private $toEncoding = false;
+
+    /**
      * Open csv file
      * @param string $path Csv file path
      * @return core\helpers\CsvHelper Class instance
@@ -73,6 +83,19 @@ class CsvHelper
     }
 
     /**
+     * Set charsets for encoding
+     * @param string $from From charset
+     * @param string $to To charset
+     * @return this Class instance
+     */
+    public function encode($from, $to)
+    {
+        $this->fromEncoding = $from;
+        $this->toEncoding = $to;
+        return $this;
+    }
+
+    /**
      * Read opened csv file
      * @param function $func Function that execute for every file line
      * @return void
@@ -90,12 +113,26 @@ class CsvHelper
         }
         while (!feof($this->handle)) {
             $buffer = fgetcsv($this->handle, 4096, $this->delimeter);
+            if ($buffer === false) {
+                continue;
+            }
             $num++;
+
+            // check offset
             if ($this->skipCount !== false && $this->skipCount === $num) {
                 continue;
             }
+
+            // check limit
             if ($limit !== false && $limit === $num) {
                 break;
+            }
+
+            // change encoding
+            if ($this->toEncoding !== false && $this->fromEncoding !== false) {
+                foreach ($buffer as &$b) {
+                    $b = iconv($this->fromEncoding, $this->toEncoding, $b);
+                }
             }
             call_user_func($func, $buffer);
         }

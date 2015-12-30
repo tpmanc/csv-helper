@@ -43,7 +43,7 @@ France: Paris
 Great Gritain: London
 ```
 
-## Custom delimiter
+### Custom delimiter
 
 file.csv:
 ```
@@ -69,7 +69,19 @@ France: Paris
 Great Gritain: London
 ```
 
-## Offset and limit
+### Change encoging
+
+```php
+use tpmanc\csvhelper\CsvHelper;
+
+...
+
+CsvHelper::open('files/file.csv')->encode('cp1251', 'utf-8')->parse(function($line) {
+    echo $line[0] . ': ' . $line[1];
+});
+```
+
+### Offset and limit
 
 file.csv:
 ```
@@ -93,7 +105,7 @@ Result:
 France: Paris
 ```
 
-## Using variables from the parent scope
+### Using variables from the parent scope
 
 file.csv:
 ```
