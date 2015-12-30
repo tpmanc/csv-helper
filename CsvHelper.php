@@ -4,10 +4,13 @@
  */
 namespace tpmanc\csvhelper;
 
+use tpmanc\csvhelper\CsvFile;
+use tpmanc\csvhelper\CsvBase;
+
 /**
  * Helper class for working with CSV files
  */
-class CsvHelper
+class CsvHelper extends CsvBase
 {
     private $handle;
 
@@ -17,24 +20,19 @@ class CsvHelper
     private $skipCount = false;
 
     /**
-     * @var string Csv file rows delimeter
-     */
-    private $delimeter = ';';
-
-    /**
      * @var integer|boolean Lines count for reading
      */
     private $limit = false;
 
     /**
-     * @var string|boolean Set encoding from `$fromEncoding` to `$toEncoding`
+     * Create new csv file
+     * @param string $filePath New file path
+     * @return core\helpers\CsvFile Class instance
      */
-    private $fromEncoding = false;
-
-    /**
-     * @var string|boolean Set encoding from `$fromEncoding` to `$toEncoding`
-     */
-    private $toEncoding = false;
+    public static function create($filePath)
+    {
+        return new CsvFile($filePath);
+    }
 
     /**
      * Open csv file
@@ -44,6 +42,7 @@ class CsvHelper
     public static function open($path)
     {
         $instance = new self();
+        $instance->filePath = $path;
         $instance->handle = fopen($path, "r");
 
         return $instance;
@@ -72,30 +71,6 @@ class CsvHelper
     }
 
     /**
-     * Set delimeter for csv file
-     * @param string $d Delimeter
-     * @return this Class instance
-     */
-    public function delimeter($d)
-    {
-        $this->delimeter = $d;
-        return $this;
-    }
-
-    /**
-     * Set charsets for encoding
-     * @param string $from From charset
-     * @param string $to To charset
-     * @return this Class instance
-     */
-    public function encode($from, $to)
-    {
-        $this->fromEncoding = $from;
-        $this->toEncoding = $to;
-        return $this;
-    }
-
-    /**
      * Read opened csv file
      * @param function $func Function that execute for every file line
      * @return void
@@ -112,7 +87,7 @@ class CsvHelper
             $limit = false;
         }
         while (!feof($this->handle)) {
-            $buffer = fgetcsv($this->handle, 4096, $this->delimeter);
+            $buffer = fgetcsv($this->handle, 4096, $this->delimiter);
             if ($buffer === false) {
                 continue;
             }

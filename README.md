@@ -69,7 +69,7 @@ France: Paris
 Great Gritain: London
 ```
 
-### Change encoging
+### Change encoding
 
 ```php
 use tpmanc\csvhelper\CsvHelper;
@@ -135,4 +135,23 @@ Result:
 3
 Russia
 France
+```
+
+## Create new file
+
+```php
+use tpmanc\csvhelper\CsvHelper;
+
+...
+
+$file = CsvHelper::create()->delimiter(';');
+
+$file->encode('cp1251', 'utf-8'); // change encoding
+$file->addLine('1.;France;'); // add row to file by string
+$file->addLine([
+    2,
+    'Germany'
+]); // add row to file by array
+
+$file->save('./new-file.csv');
 ```
