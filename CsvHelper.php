@@ -26,18 +26,17 @@ class CsvHelper extends CsvBase
 
     /**
      * Create new csv file
-     * @param string $filePath New file path
-     * @return core\helpers\CsvFile Class instance
+     * @return CsvFile Class instance
      */
-    public static function create($filePath)
+    public static function create()
     {
-        return new CsvFile($filePath);
+        return new CsvFile();
     }
 
     /**
      * Open csv file
      * @param string $path Csv file path
-     * @return core\helpers\CsvHelper Class instance
+     * @return CsvHelper Class instance
      */
     public static function open($path)
     {
@@ -51,7 +50,7 @@ class CsvHelper extends CsvBase
     /**
      * Set lines count limit
      * @param integer $count Lines count
-     * @return this Class instance
+     * @return CsvHelper Class instance
      */
     public function limit($count)
     {
@@ -62,7 +61,7 @@ class CsvHelper extends CsvBase
     /**
      * Set number of line from top to skip
      * @param integer $n Count of lines to skip
-     * @return this Class instance
+     * @return CsvHelper Class instance
      */
     public function offset($n)
     {
@@ -72,7 +71,7 @@ class CsvHelper extends CsvBase
 
     /**
      * Read opened csv file
-     * @param function $func Function that execute for every file line
+     * @param callback $func Function that execute for every file line
      * @return void
      */
     public function parse($func)
@@ -91,16 +90,17 @@ class CsvHelper extends CsvBase
             if ($buffer === false) {
                 continue;
             }
+
+            // check limit
+            if ($limit !== false && $limit === $num) {
+                break;
+            }
+
             $num++;
 
             // check offset
             if ($this->skipCount !== false && $this->skipCount === $num) {
                 continue;
-            }
-
-            // check limit
-            if ($limit !== false && $limit === $num) {
-                break;
             }
 
             // change encoding

@@ -1,0 +1,17 @@
+build_settings:
+  clone_depth: 1
+  ignore:
+    - "vendor"
+    - "tests"
+
+setup:
+  composer:
+    action: "install"
+
+test:
+  php_unit:
+     config:
+      - "phpunit.xml"
+
+  php_code_sniffer:
+    standard: "PSR2"

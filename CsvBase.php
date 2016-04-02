@@ -27,7 +27,7 @@ class CsvBase
     /**
      * Set delimiter for csv file
      * @param string $d Delimiter
-     * @return this Class instance
+     * @return object Class instance
      */
     public function delimiter($d)
     {
@@ -37,13 +37,15 @@ class CsvBase
 
     /**
      * Set charsets for encoding
-     * @param string $from From charset
      * @param string $to To charset
-     * @return this Class instance
+     * @param bool|string $from From charset
+     * @return object Class instance
      */
-    public function encode($from, $to)
+    public function encode($to, $from = false)
     {
-        $this->fromEncoding = $from;
+        if ($from !== false) {
+            $this->fromEncoding = $from;
+        }
         $this->toEncoding = $to;
         return $this;
     }

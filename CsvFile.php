@@ -12,13 +12,13 @@ use tpmanc\csvhelper\CsvBase;
 class CsvFile extends CsvBase
 {
     /**
-     * @var string File content
+     * @var array File content
      */
-    private $content = '';
+    private $content = [];
 
     /**
      * Constructor
-     * @param string New file path
+     * @return CsvFile
      */
     public function __construct(){}
 
@@ -29,10 +29,7 @@ class CsvFile extends CsvBase
      */
     public function setContent($fileContent)
     {
-        if ($this->fromEncoding !== false && $this->toEncoding !== false) {
-            $fileContent = iconv($this->fromEncoding, $this->toEncoding, $fileContent);
-        }
-        $this->content = $fileContent;
+        $this->content = [$fileContent];
         return $this;
     }
 
@@ -43,27 +40,30 @@ class CsvFile extends CsvBase
      */
     public function addLine($line)
     {
-        if (is_array($line)) {
-            $strLine .= implode($this->delimiter, $line) . "\n";
-        } else {
-            $strLine .= $line . "\n";
-        }
-        if ($this->fromEncoding !== false && $this->toEncoding !== false) {
-            $strLine = iconv($this->fromEncoding, $this->toEncoding, $strLine);
-        }
-        $this->content .= $strLine . "\n";
+        $this->content[] = $line;
         return $this;
     }
 
     /**
      * Save content to file
-     * @return void
+     * @param $filePath
      */
     public function save($filePath)
     {
+        $strLine = '';
+        foreach ($this->content as $line) {
+            if (is_array($line)) {
+                $strLine .= implode($this->delimiter, $line) . "\n";
+            } else {
+                $strLine .= $line . "\n";
+            }
+        }
         try {
-            file_put_contents($filePath, $this->content);
-        } catch (Exception $e) {
+            if ($this->toEncoding !== false) {
+                $strLine = iconv("UTF-8", $this->toEncoding, $strLine);
+            }
+            file_put_contents($filePath, $strLine);
+        } catch (\Exception $e) {
             throw new \RuntimeException($e);
         }
     }
