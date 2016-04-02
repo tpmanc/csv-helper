@@ -20,7 +20,7 @@ class CsvFile extends CsvBase
      * Constructor
      * @return CsvFile
      */
-    public function __construct ()
+    public function __construct()
     {
     }
 
