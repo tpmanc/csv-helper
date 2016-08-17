@@ -47,6 +47,19 @@ class CsvFile extends CsvBase
     }
 
     /**
+     * Add lines to file
+     * @param array $lines Array of lines
+     * @return object this
+     */
+    public function addLines(array $lines)
+    {
+        foreach ($lines as $line) {
+            $this->addLine($line);
+        }
+        return $this;
+    }
+
+    /**
      * Save content to file
      * @param $filePath
      */
