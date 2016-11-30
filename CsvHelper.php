@@ -99,7 +99,7 @@ class CsvHelper extends CsvBase
             $num++;
 
             // check offset
-            if ($this->skipCount !== false && $this->skipCount === $num) {
+            if ($this->skipCount !== false && $this->skipCount >= $num) {
                 continue;
             }
 
